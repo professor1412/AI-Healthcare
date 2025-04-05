@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Healthcare AI Assistant</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      max-width: 600px;
+      margin: auto;
+    }
+    h2 { color: #2c3e50; }
+    label { display: block; margin-top: 10px; }
+    select, input, textarea, button {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+    }
+    #result {
+      margin-top: 20px;
+      white-space: pre-wrap;
+      background: #f4f4f4;
+      padding: 10px;
+      border-left: 5px solid #2ecc71;
+    }
+  </style>
+</head>
+<body>
+  <h2>Healthcare AI Assistant</h2>
+
+  <form id="ai-form">
+    <label for="query">Enter your query:</label>
+    <textarea id="query" name="query" required></textarea>
+
+    <label for="option">Select option:</label>
+    <select id="option" name="option" required>
+        <option value="Cardiologist">Cardiology Report</option>
+        <option value="Psychologist">Psychology Report</option>
+        <option value="Pulmonologist">Pulmonology Report</option>
+        <option value="MultidisciplinaryTeam">Multidisciplinary Team Report</option>
+      </select>
+
+    <label for="files">Upload PDF(s):</label>
+    <input type="file" id="files" name="files" accept="application/pdf" multiple required />
+
+    <button type="submit">Submit</button>
+  </form>
+
+  <div id="result"></div>
+
+  <script>
+    const form = document.getElementById("ai-form");
+    const resultDiv = document.getElementById("result");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const formData = new FormData();
+      formData.append("query", document.getElementById("query").value);
+      formData.append("option", document.getElementById("option").value);
+
+      const files = document.getElementById("files").files;
+      for (let i = 0; i < files.length; i++) {
+        formData.append("files", files[i]);
+      }
+
+      resultDiv.textContent = "Processing...";
+
+      try {
+        const response = await fetch("http://127.0.0.1:8000/healthcare-assist/", {
+          method: "POST",
+          body: formData,
+        });
+
+        if (!response.ok) {
+          const error = await response.json();
+          throw new Error(error.detail || "Server Error");
+        }
+
+        const data = await response.json();
+        resultDiv.textContent = JSON.stringify(data, null, 2);
+      } catch (error) {
+        resultDiv.textContent = "Error: " + error.message;
+      }
+    });
+  </script>
+</body>
+</html>
