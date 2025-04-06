@@ -5,6 +5,7 @@ from PyPDF2 import PdfReader
 from langchain.docstore.document import Document
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.embeddings import HuggingFaceInferenceAPIEmbeddings
+
 from langchain.vectorstores import Chroma
 from langchain_core.documents import Document as LangchainDocument
 import sys
@@ -57,7 +58,7 @@ def create_healthcare_retriever(documents: List[Document]):
     # Initialize the embeddings
     embeddings = HuggingFaceInferenceAPIEmbeddings(
         api_key=hf_token,
-        model_name="sentence-transformers/all-MiniLM-l6-v2"
+        model_name="sentence-transformers/all-MiniLM-L6-v2"
     )
 
     # Use Chroma instead of InMemory store for persistent, scalable vector storage
