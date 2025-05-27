@@ -27,12 +27,7 @@ A FastAPI-based REST API that ingests medical PDF reports (cardiology, psycholog
 
 ---
 
-## 🚀 Quickstart
 
-### 1. Clone & Install
 
-```bash
-git clone https://github.com/your-org/healthcare-ai-assistant.git
-cd healthcare-ai-assistant
-python3 -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt
+
+
